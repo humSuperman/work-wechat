@@ -71,7 +71,7 @@ class Cache
 
     private function cacheFile(): string
     {
-        return getcwd() . '/' . $this->cacheDir . $this->key . '_' . $this->fileName;
+        return str_replace('/public', '', getcwd()) . '/' . $this->cacheDir . $this->key . '_' . $this->fileName;
     }
 
 }
