@@ -7,6 +7,7 @@ use Carbon\Carbon;
 class Cache
 {
     private $cacheDir = './cache/', $fileName;
+    private $key;
 
     public function __construct(...$id)
     {
@@ -21,6 +22,7 @@ class Cache
      */
     public function get(string $key)
     {
+        $this->key = $key;
         $file = $this->cacheFile();
         if (!file_exists($file) || !is_readable($file)) {
             throw new WorkWechatException('cache file not exist');
@@ -32,7 +34,7 @@ class Cache
             throw new WorkWechatException('cache data not json');
         }
         if (!array_key_exists($key, $cacheJson)) {
-            throw new WorkWechatException(sprintf('cache not has key [%s]',$key));
+            throw new WorkWechatException(sprintf('cache not has key [%s]', $key));
         }
         $this->checkExpired($cacheJson);
         return $cacheJson[$key];
@@ -40,6 +42,7 @@ class Cache
 
     public function set(string $key, string $value, string $expiredAt = '')
     {
+        $this->key = $key;
         $data = [$key => $value, 'expiredAt' => $expiredAt];
         file_put_contents($this->cacheFile(), json_encode($data));
     }
@@ -68,7 +71,7 @@ class Cache
 
     private function cacheFile(): string
     {
-        return getcwd().'/'.$this->cacheDir . $this->fileName;
+        return getcwd() . '/' . $this->cacheDir . $this->key . '_' . $this->fileName;
     }
 
 }

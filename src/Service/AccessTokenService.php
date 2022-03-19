@@ -10,9 +10,9 @@ use WorkWechat\Utils\WorkWechatException;
 class AccessTokenService extends BaseService
 {
     const ACCESS_TOKEN = 'access_token';
-    private $cache, $corpId = '', $secret = '';
-
     const GET_TOKEN = '/cgi-bin/gettoken';
+
+    private $cache, $corpId = '', $secret = '';
 
     public function __construct(string $corpId, string $secret)
     {
