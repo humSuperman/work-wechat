@@ -12,8 +12,8 @@ class Cache
     public function __construct(...$id)
     {
         $this->fileName = md5(implode(',', $id)) . '.json';
-        if (!is_dir($this->cacheDir)) {
-            mkdir($this->cacheDir, 0755, true);
+        if (!is_dir($this->cacheDir())) {
+            mkdir($this->cacheDir(), 0755, true);
         }
     }
 
@@ -71,7 +71,12 @@ class Cache
 
     private function cacheFile(): string
     {
-        return str_replace('/public', '', getcwd()) . '/' . $this->cacheDir . $this->key . '_' . $this->fileName;
+        return $this->cacheDir() . $this->key . '_' . $this->fileName;
+    }
+
+    private function cacheDir(): string
+    {
+        return php_sapi_name() == 'fpm-fcgi' ? './.' . $this->cacheDir : $this->cacheDir;
     }
 
 }
