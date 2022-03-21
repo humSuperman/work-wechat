@@ -10,6 +10,16 @@
 composer require midi/work-wechat
 ```
 
+#### [网页授权](https://developer.work.weixin.qq.com/document/path/91022)
+```php
+$url = WorkWechat\AuthService::getRedirectUrl('corpId','https://www.baidu.com')
+```
+
+#### [扫码登录](https://developer.work.weixin.qq.com/document/path/91019)
+```php
+$url = WorkWechat\AuthService::getQrCodeUrl('corpId','agentId','https://www.baidu.com','')
+```
+
 #### [获取access_token](https://developer.work.weixin.qq.com/document/path/91039)
 ```php
 // 已增加本地文件缓存
@@ -54,7 +64,7 @@ $departmentService->detail(id);
 
 #### 如何获取external_userid
 [通过成员userId获取](https://developer.work.weixin.qq.com/document/path/92113)
-[前段jsapi获取](https://developer.work.weixin.qq.com/document/path/91799)
+[前端jsapi获取](https://developer.work.weixin.qq.com/document/path/91799)
 
 #### 获取企业jsapi ticket
 [wx.config](https://developer.work.weixin.qq.com/document/path/94313)
