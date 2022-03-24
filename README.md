@@ -9,6 +9,16 @@
 ```bash
 composer require midi/work-wechat
 ```
+#### [验证URL有效性](https://developer.work.weixin.qq.com/document/path/90238#%E9%AA%8C%E8%AF%81url%E6%9C%89%E6%95%88%E6%80%A7)
+```php
+$service = new WorkWechat\EventService('corpId','encodingAesKey','token');
+try{
+    echo $service->verifyURL('msgSignature',(int)'timestamp','nonce','msgEncrypt');
+}catch (\Exception $e){
+    print $e;
+    echo '';
+}
+```
 
 #### [网页授权](https://developer.work.weixin.qq.com/document/path/91022)
 ```php
