@@ -13,6 +13,7 @@ composer require midi/work-wechat
 ```php
 $service = new WorkWechat\EventService('corpId','encodingAesKey','token');
 try{
+    // 需要自行urldecode
     echo $service->verifyURL('msgSignature',(int)'timestamp','nonce','msgEncrypt');
 }catch (\Exception $e){
     print $e;
@@ -25,6 +26,7 @@ try{
 $service = new WorkWechat\EventService('corpId','encodingAesKey','token');
 $xml = file_get_contents("php://input");
 try{
+    // 需要自行urldecode
     // 接收到的数据已转为array
     $service->decryptMsg('msgSignature',(int)'timestamp','nonce',$xml);
 }catch (\Exception $e){
