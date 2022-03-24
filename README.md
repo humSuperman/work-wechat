@@ -20,6 +20,19 @@ try{
 }
 ```
 
+#### [接收post业务数据](https://developer.work.weixin.qq.com/document/path/91116#32-%E6%94%AF%E6%8C%81http-post%E8%AF%B7%E6%B1%82%E6%8E%A5%E6%94%B6%E4%B8%9A%E5%8A%A1%E6%95%B0%E6%8D%AE)
+```php
+$service = new WorkWechat\EventService('corpId','encodingAesKey','token');
+$xml = file_get_contents("php://input");
+try{
+    // 接收到的数据已转为array
+    $service->decryptMsg('msgSignature',(int)'timestamp','nonce',$xml);
+}catch (\Exception $e){
+    print $e;
+    echo 'fail';
+}
+```
+
 #### [网页授权](https://developer.work.weixin.qq.com/document/path/91022)
 ```php
 $url = WorkWechat\AuthService::getRedirectUrl('corpId','https://www.baidu.com')
