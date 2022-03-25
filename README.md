@@ -87,6 +87,15 @@ $departmentService->list(id);
 $departmentService->detail(id);
 ```
 
+#### [发送文本消息](https://developer.work.weixin.qq.com/document/path/90236#%E6%96%87%E6%9C%AC%E6%B6%88%E6%81%AF)
+```php
+$messageService = new WorkWechat\MessageService('agentId');
+$messageService->setAccessToken($accessToken);
+$messageService->setMessage('text-message'); // 设置发送的文本消息
+$messageService->setSecrecy(1); // 设置消息是否保密 0-否 1-是
+$messageService->sendTextMsgToCompanyUser('userId','userId','userId','userId','userId','userId','userId'); // 向多个/一个userId发送此消息
+```
+
 #### 如何获取external_userid
 [通过成员userId获取](https://developer.work.weixin.qq.com/document/path/92113)
 [前端jsapi获取](https://developer.work.weixin.qq.com/document/path/91799)
