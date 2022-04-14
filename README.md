@@ -75,6 +75,13 @@ $customerService->setAccessToken($accessToken);
 $customerService->customerDetail('externalUserid')
 ```
 
+#### [联系客户统计](https://developer.work.weixin.qq.com/document/path/92132)
+```php
+$customerService = new WorkWechat\CustomerService();
+$customerService->setAccessToken($accessToken);
+$customerService->userBehaviorData(['userid'],['deptmentId'],1648780712,1649903913)
+```
+
 #### [企业部门]()
 ```php
 $departmentService = new WorkWechat\DepartmentService();

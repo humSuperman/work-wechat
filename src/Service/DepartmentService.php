@@ -2,7 +2,6 @@
 
 namespace WorkWechat\Service;
 
-use GuzzleHttp\Exception\GuzzleException;
 use WorkWechat\Utils\WorkWechatException;
 
 class DepartmentService extends BaseService
@@ -15,8 +14,6 @@ class DepartmentService extends BaseService
      * 获取企业部门及子部门
      * @param int $id
      * @return array
-     * @throws GuzzleException
-     * @throws \HttpException
      * @throws WorkWechatException
      */
     public function list(int $id = 0): array
@@ -32,8 +29,6 @@ class DepartmentService extends BaseService
      * 获取企业部门详情
      * @param int $id
      * @return array
-     * @throws GuzzleException
-     * @throws \HttpException
      * @throws WorkWechatException
      */
     public function detail(int $id): array

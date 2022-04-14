@@ -23,9 +23,7 @@ class AccessTokenService extends BaseService
     }
 
     /**
-     * @throws \HttpException
      * @throws WorkWechatException
-     * @throws GuzzleException
      */
     public function getToken(): string
     {
@@ -39,8 +37,6 @@ class AccessTokenService extends BaseService
     }
 
     /**
-     * @throws \HttpException
-     * @throws GuzzleException
      * @throws WorkWechatException
      */
     public function refresh(): string

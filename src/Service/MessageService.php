@@ -2,6 +2,8 @@
 
 namespace WorkWechat\Service;
 
+use WorkWechat\Utils\WorkWechatException;
+
 class MessageService extends BaseService
 {
     const APPLET_MESSAGE = '/cgi-bin/message/send';
@@ -27,9 +29,7 @@ class MessageService extends BaseService
     }
 
     /**
-     * @throws \WorkWechat\Utils\WorkWechatException
-     * @throws \HttpException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws WorkWechatException
      */
     public function sendTextMsgToCompanyUser(string ...$id): array
     {

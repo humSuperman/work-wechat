@@ -10,12 +10,7 @@ class HttpClientService
 {
     private $client, $response;
 
-    private $option = [
-        'query' => [],
-        'multipart' => [],
-        'json' => [],
-        'headers' => [],
-    ];
+    private $option;
 
     public function __construct()
     {
@@ -52,57 +47,64 @@ class HttpClientService
     }
 
     /**
-     * @throws GuzzleException
-     * @throws \HttpException
      * @throws WorkWechatException
      */
     public function get(string $url): array
     {
-        $this->response = $this->client->get($url, $this->option);
+        try {
+            $this->response = $this->client->get($url, $this->option);
+        } catch (GuzzleException $e) {
+            throw new WorkWechatException($e->getMessage(), $e->getCode());
+        }
         return $this->response();
     }
 
     /**
-     * @throws GuzzleException
-     * @throws \HttpException
      * @throws WorkWechatException
      */
     public function post(string $url): array
     {
-        $this->response = $this->client->post($url, $this->option);
+        try {
+            $this->response = $this->client->post($url, $this->option);
+        } catch (GuzzleException $e) {
+            throw new WorkWechatException($e->getMessage(), $e->getCode());
+        }
         return $this->response();
     }
 
     /**
-     * @throws GuzzleException
-     * @throws \HttpException
      * @throws WorkWechatException
      */
     public function put(string $url): array
     {
-        $this->response = $this->client->post($url, $this->option);
+        try {
+            $this->response = $this->client->put($url, $this->option);
+        } catch (GuzzleException $e) {
+            throw new WorkWechatException($e->getMessage(), $e->getCode());
+        }
         return $this->response();
     }
 
     /**
-     * @throws GuzzleException
-     * @throws \HttpException
      * @throws WorkWechatException
      */
     public function delete(string $url): array
     {
-        $this->response = $this->client->post($url, $this->option);
+        try {
+            $this->response = $this->client->delete($url, $this->option);
+        } catch (GuzzleException $e) {
+            throw new WorkWechatException($e->getMessage(), $e->getCode());
+        }
         return $this->response();
     }
 
     /**
-     * @throws \HttpException
      * @throws WorkWechatException
      */
     protected function response(): array
     {
         if ($this->response->getStatusCode() != 200) {
-            throw new \HttpException('http response fail' . $this->response->getStatusCode());
+            throw new WorkWechatException('http response fail' . $this->response->getStatusCode());
         }
         $body = json_decode((string)$this->response->getBody(), true);
         if ($body['errcode'] != 0) {
