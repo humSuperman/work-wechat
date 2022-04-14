@@ -9,6 +9,7 @@ class DepartmentService extends BaseService
 
     const GET_DEPARTMENT_LIST = '/cgi-bin/department/list';
     const GET_DEPARTMENT_DETAIL = '/cgi-bin/department/get';
+    const GET_DEPARTMENT_USER_LIST = '/cgi-bin/user/simplelist';
 
     /**
      * 获取企业部门及子部门
@@ -38,6 +39,23 @@ class DepartmentService extends BaseService
             'id' => $id
         ]);
         return $this->client->get(self::GET_DEPARTMENT_DETAIL);
+    }
+
+    /**
+     * 获取企业部门详情
+     * @param int $id
+     * @param int $child
+     * @return array
+     * @throws WorkWechatException
+     */
+    public function userList(int $id, int $child = 0): array
+    {
+        $this->client->setQuery([
+            'access_token' => $this->getAccessToken(),
+            'department_id' => $id,
+            'fetch_child' => $child
+        ]);
+        return $this->client->get(self::GET_DEPARTMENT_USER_LIST);
     }
 
 
