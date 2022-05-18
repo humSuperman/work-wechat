@@ -59,4 +59,31 @@ class DepartmentService extends BaseService
     }
 
 
+    /**
+     * @throws WorkWechatException
+     */
+    public function totalUserList(): array
+    {
+        $departmentList = $this->list();
+        $userList = [];
+        foreach ($departmentList['department'] as $department) {
+            $userListWx = $this->userList($department['id']);
+            $userListData = [];
+            foreach ($userListWx['userlist'] as &$user) {
+                $userListData[] = [
+                    'department' => $department['id'],
+                    'userid' => $user['userid'],
+                    'name' => $user['name'],
+                ];
+            }
+            $userList[] = [
+                'id' => $department['id'],
+                'name' => $department['name'],
+                'parentid' => $department['parentid'],
+                'userList' => $userListData,
+            ];
+        }
+        return $userList;
+    }
+
 }
