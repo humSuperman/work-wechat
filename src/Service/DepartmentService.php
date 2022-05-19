@@ -101,6 +101,7 @@ class DepartmentService extends BaseService
                     'name' => $user['name'],
                     'parentId' => $department['id'],
                     'departmentId' => $department['id'],
+                    'check' => '',
                 ];
             }
             $departmentData[$i] = [
@@ -108,6 +109,7 @@ class DepartmentService extends BaseService
                 'name' => $department['name'],
                 'parentId' => $department['parentid'],
                 'departmentId' => 0,
+                'check' => '',
                 'child' => $userListData,
             ];
             $deptMap[$department['id']] = &$departmentData[$i];
