@@ -92,6 +92,12 @@ $departmentService->list();
 $departmentService->list(id);
 // 部门详情
 $departmentService->detail(id);
+
+// 所有部门及部门下属员工
+$departmentService->totalUserList();
+
+// 所有部门及部门下属员工 树形结构
+$departmentService->departmentTreeANdTotalUser();
 ```
 
 #### [发送文本消息](https://developer.work.weixin.qq.com/document/path/90236#%E6%96%87%E6%9C%AC%E6%B6%88%E6%81%AF)

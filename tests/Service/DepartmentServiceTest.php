@@ -24,4 +24,10 @@ class DepartmentServiceTest extends TestCase
         $this->departmentService->setAccessToken($token);
         echo json_encode($this->departmentService->totalUserList());
     }
+    public function testDepartmentTreeANdTotalUser()
+    {
+        $token = "HviZpaxfVLnVxkW2vN63N9J1NjzSx_dfMMzU5I3VBw";
+        $this->departmentService->setAccessToken($token);
+        echo json_encode($this->departmentService->departmentTreeANdTotalUser());
+    }
 }

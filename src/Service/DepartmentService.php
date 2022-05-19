@@ -86,4 +86,44 @@ class DepartmentService extends BaseService
         return $userList;
     }
 
+    public function departmentTreeANdTotalUser(): array
+    {
+        $departmentList = $this->list();
+        $departmentData = [];
+        $deptMap = [];
+        $i = 0;
+        foreach ($departmentList['department'] as $department) {
+            $userListWx = $this->userList($department['id']);
+            $userListData = [];
+            foreach ($userListWx['userlist'] as $user) {
+                $userListData[] = [
+                    'department' => $department['id'],
+                    'userid' => $user['userid'],
+                    'name' => $user['name'],
+                ];
+            }
+            $departmentData[$i] = [
+                'id' => $department['id'],
+                'name' => $department['name'],
+                'parentid' => $department['parentid'],
+                'userList' => $userListData,
+            ];
+            $deptMap[$department['id']] = &$departmentData[$i];
+            $i++;
+        }
+        $tree= [];
+        foreach ($departmentData as $idx => $department) {
+            // 判断是否存在parent
+            if (!isset($deptMap[$department['parentid']]) || $department['parentid'] == 0) {
+                $tree[] = &$departmentData[$idx];
+            } else {
+                if (isset($deptMap[$department['parentid']])) {
+                    $parent = &$deptMap[$department['parentid']];
+                    $parent['child'][] = &$departmentData[$idx];
+                }
+            }
+        }
+        return $tree;
+    }
+
 }
