@@ -97,16 +97,18 @@ class DepartmentService extends BaseService
             $userListData = [];
             foreach ($userListWx['userlist'] as $user) {
                 $userListData[] = [
-                    'department' => $department['id'],
-                    'userid' => $user['userid'],
+                    'id' => $user['userid'],
                     'name' => $user['name'],
+                    'parentId' => $department['id'],
+                    'departmentId' => $department['id'],
                 ];
             }
             $departmentData[$i] = [
                 'id' => $department['id'],
                 'name' => $department['name'],
-                'parentid' => $department['parentid'],
-                'userList' => $userListData,
+                'parentId' => $department['parentid'],
+                'departmentId' => 0,
+                'child' => $userListData,
             ];
             $deptMap[$department['id']] = &$departmentData[$i];
             $i++;
@@ -114,11 +116,11 @@ class DepartmentService extends BaseService
         $tree= [];
         foreach ($departmentData as $idx => $department) {
             // 判断是否存在parent
-            if (!isset($deptMap[$department['parentid']]) || $department['parentid'] == 0) {
+            if (!isset($deptMap[$department['parentId']]) || $department['parentId'] == 0) {
                 $tree[] = &$departmentData[$idx];
             } else {
-                if (isset($deptMap[$department['parentid']])) {
-                    $parent = &$deptMap[$department['parentid']];
+                if (isset($deptMap[$department['parentId']])) {
+                    $parent = &$deptMap[$department['parentId']];
                     $parent['child'][] = &$departmentData[$idx];
                 }
             }
