@@ -31,10 +31,29 @@ class MessageService extends BaseService
     /**
      * @throws WorkWechatException
      */
-    public function sendTextMsgToCompanyUser(string ...$id): array
+    public function sendTextMsgToCompanyUser(string $id): array
     {
         $json = [
-            'touser' => implode('|', $id),
+            'touser' => $id,
+            'msgtype' => 'text',
+            'agentid' => $this->agentId,
+            'text' => [
+                'content' => $this->message,
+            ],
+            'safe' => $this->secrecy,
+        ];
+        $query = [
+            'access_token' => $this->getAccessToken(),
+        ];
+        $this->client->setQuery($query);
+        $this->client->setJson($json);
+        return $this->client->post(self::APPLET_MESSAGE);
+    }
+
+    public function sendTextMsgToCompanyUsers(array $users): array
+    {
+        $json = [
+            'touser' => implode('|', $users),
             'msgtype' => 'text',
             'agentid' => $this->agentId,
             'text' => [
