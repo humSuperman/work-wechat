@@ -13,6 +13,7 @@ class TicketService extends BaseService
 
     const COMPANY_JSAPI_TICKET = '/cgi-bin/get_jsapi_ticket';
     const AGENT_JSAPI_TICKET = '/cgi-bin/ticket/get';
+    const CORPID_TO_OPEN_CORPID = '/cgi-bin/service/corpid_to_opencorpid';
 
     private $cache;
 
@@ -63,5 +64,18 @@ class TicketService extends BaseService
         $data = $this->client->get(self::AGENT_JSAPI_TICKET);
         $this->cache->set(self::AGENT_TICKET, $data['ticket'], Carbon::now()->addMinutes(110));
         return $data['ticket'];
+    }
+
+    public function openCorpId(string $corpId): string
+    {
+        $this->client->setQuery([
+            'access_token' => $this->getAccessToken(),
+        ]);
+        $this->client->setJson([
+            'corpid' => $corpId,
+        ]);
+        $data = $this->client->post(self::CORPID_TO_OPEN_CORPID);
+        $this->cache->set(self::AGENT_TICKET, $data['ticket'], Carbon::now()->addMinutes(110));
+        return $data['open_corpid'];
     }
 }

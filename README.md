@@ -132,3 +132,11 @@ $service->agent();
 // 刷新应用jsapi ticket
 $service->refreshCompany()
 ```
+
+#### 明文corpid转换为加密corpid
+[明文corpid转换为加密corpid](https://developer.work.weixin.qq.com/document/path/95604)
+```php
+$service = new WorkWechat\TicketService('corpId','secret');
+$service->setAccessToken($accessToken);
+$service->openCorpId("corpid");
+```
