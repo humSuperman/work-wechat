@@ -69,7 +69,7 @@ class TicketService extends BaseService
     public function openCorpId(string $corpId): string
     {
         $this->client->setQuery([
-            'access_token' => $this->getAccessToken(),
+            'provider_access_token' => $this->getAccessToken(),
         ]);
         $this->client->setJson([
             'corpid' => $corpId,
