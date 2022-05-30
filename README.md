@@ -79,7 +79,7 @@ $customerService->customerDetail('externalUserid')
 ```php
 $customerService = new WorkWechat\CustomerService();
 $customerService->setAccessToken($accessToken);
-$customerService->userBehaviorData(['userid'],['deptmentId'],1648780712,1649903913)
+$customerService->userBehaviorData(['userid','userid',...],['deptmentId',...],1618780712,1649903913)
 ```
 
 #### [企业部门]()
