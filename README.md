@@ -97,7 +97,7 @@ $departmentService->detail(id);
 $departmentService->totalUserList();
 
 // 所有部门及部门下属员工 树形结构
-$departmentService->departmentTreeANdTotalUser();
+$departmentService->departmentTreeAndTotalUser();
 ```
 
 #### [发送文本消息](https://developer.work.weixin.qq.com/document/path/90236#%E6%96%87%E6%9C%AC%E6%B6%88%E6%81%AF)
@@ -139,4 +139,23 @@ $service->refreshCompany()
 $service = new WorkWechat\TicketService('corpId','secret');
 $service->setAccessToken($accessToken);
 $service->openCorpId("corpid");
+```
+
+#### 通讯录标签管理
+[标签创建更新及绑定企业成员](https://developer.work.weixin.qq.com/document/path/90210)
+```php
+$service = new WorkWechat\TagService();
+$service->setAccessToken($accessToken);
+// 具体实现方法
+$service->list();
+$service->create("标签名");
+$service->update($tagId,"标签名");
+$service->delete($tagId);
+$service->userList($tagId);
+// 绑定用户或部门下用户
+$service->bindTagUser($tagId,'userId-1','userId-2','userId-3','userId-4',...); // 可绑定1个或多个，100条上限
+$service->bindTagDepartment($tagId,$deptId,$deptId,$deptId,$deptId,$deptId,...); // 可绑定1个或多个，100条上限
+// 绑定用户或部门下用户
+$service->deleteTagUser($tagId,'userId-1','userId-2','userId-3','userId-4',...); // 删除1个或多个，100条上限
+$service->deleteTagDepartment($tagId,$deptId,$deptId,$deptId,$deptId,$deptId,...); // 删除1个或多个，100条上限
 ```

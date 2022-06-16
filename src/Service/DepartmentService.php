@@ -86,7 +86,10 @@ class DepartmentService extends BaseService
         return $userList;
     }
 
-    public function departmentTreeANdTotalUser(): array
+    /**
+     * @throws WorkWechatException
+     */
+    public function departmentTreeAndTotalUser(): array
     {
         $departmentList = $this->list();
         $departmentData = [];
