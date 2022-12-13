@@ -4,7 +4,7 @@ namespace WorkWechat\Utils;
 
 use Throwable;
 
-class WorkWechatException extends \Exception
+class WorkWechatException extends \RuntimeException
 {
     public function __construct($message = '', $code = 0, Throwable $previous = null)
     {
