@@ -70,26 +70,22 @@ class CustomerService extends BaseService
         !empty($userId) && $param['userid'] = $userId;
         !empty($departmentId) && $param['partyid'] = $departmentId;
         for (; $endTime >= $startTime; $endTime -= self::MAX_MONTH_DAY) {
-            try {
-                $s = $endTime - self::MAX_MONTH_DAY;
-                $s < $startTime && $s = $startTime;
-                if ($s < time() - self::MAX_DAY) {
-                    continue;
+            $s = $endTime - self::MAX_MONTH_DAY;
+            $s < $startTime && $s = $startTime;
+            if ($s < time() - self::MAX_DAY) {
+                continue;
+            }
+            $param['start_time'] = $s;
+            $param['end_time'] = $endTime;
+            $this->client->setJson($param);
+            $customerBehavior = $this->client->post(self::GET_CUSTOMER_BEHAVIOR_DATA);
+            if (isset($customerBehavior['behavior_data'])) {
+                foreach ($customerBehavior['behavior_data'] as $item) {
+                    $resp['new_customer_num'] += $item['new_contact_cnt'];
+                    $resp['chat_num'] += $item['chat_cnt'];
+                    $resp['message_num'] += $item['message_cnt'];
+                    $resp['negative_num'] += $item['negative_feedback_cnt'];
                 }
-                $param['start_time'] = $s;
-                $param['end_time'] = $endTime;
-                $this->client->setJson($param);
-                $customerBehavior = $this->client->post(self::GET_CUSTOMER_BEHAVIOR_DATA);
-                if (isset($customerBehavior['behavior_data'])) {
-                    foreach ($customerBehavior['behavior_data'] as $item) {
-                        $resp['new_customer_num'] += $item['new_contact_cnt'];
-                        $resp['chat_num'] += $item['chat_cnt'];
-                        $resp['message_num'] += $item['message_cnt'];
-                        $resp['negative_num'] += $item['negative_feedback_cnt'];
-                    }
-                }
-            } catch (WorkWechatException $e) {
-                throw new WorkWechatException($e->getMessage());
             }
 
         }
