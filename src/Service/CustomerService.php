@@ -55,7 +55,7 @@ class CustomerService extends BaseService
      */
     public function userBehaviorData(array $userId, array $departmentId, int $startTime, int $endTime): array
     {
-        if(empty($userId) && $departmentId){
+        if(empty($userId) && empty($departmentId)){
             throw new WorkWechatException('查询的用户和部门不能同时为空');
         }
         $resp = [
