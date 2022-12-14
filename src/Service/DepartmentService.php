@@ -85,6 +85,28 @@ class DepartmentService extends BaseService
         }
         return $userList;
     }
+    public function uniqueUserList(): array
+    {
+        $departmentList = $this->list();
+        $userList = [];
+        $userIdMap = [];
+        foreach ($departmentList['department'] as $department) {
+            $userListWx = $this->userList($department['id']);
+            foreach ($userListWx['userlist'] as &$user) {
+                if(isset($userIdMap[$user['userid']])){
+                    continue;
+                }
+                $userIdMap[$user['userid']] = 1;
+                $userList[] = [
+                    'department' => $department['id'],
+                    'userid' => $user['userid'],
+                    'name' => $user['name'],
+                ];
+            }
+        }
+        unset($userIdMap);
+        return $userList;
+    }
 
     /**
      * @throws WorkWechatException
