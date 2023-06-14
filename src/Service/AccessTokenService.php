@@ -4,7 +4,7 @@ namespace WorkWechat\Service;
 
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
-use WorkWechat\Utils\Cache;
+use WorkWechat\Utils\FileCache;
 use WorkWechat\Utils\WorkWechatException;
 
 class AccessTokenService extends BaseService
@@ -19,7 +19,7 @@ class AccessTokenService extends BaseService
         parent::__construct();
         $this->corpId = $corpId;
         $this->secret = $secret;
-        $this->cache = new Cache($corpId, $secret);
+        $this->cache = new FileCache($corpId, $secret);
     }
 
     /**

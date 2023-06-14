@@ -3,24 +3,28 @@
 namespace WorkWechat\Utils;
 
 use Carbon\Carbon;
+use Psr\SimpleCache\CacheInterface;
 
-class Cache
+class FileCache implements CacheInterface
 {
     private $cacheDir = './cache/', $fileName;
     private $key;
 
-    public function __construct(...$id)
+    public function __construct()
     {
-        $this->fileName = md5(implode(',', $id)) . '.json';
         if (!is_dir($this->cacheDir())) {
             mkdir($this->cacheDir(), 0755, true);
         }
     }
 
+    public function setFileName($fileName){
+        $this->fileName = $fileName;
+    }
+
     /**
      * @throws WorkWechatException
      */
-    public function get(string $key)
+    public function get($key, $default = null)
     {
         $this->key = $key;
         $file = $this->cacheFile();
@@ -37,13 +41,14 @@ class Cache
             throw new WorkWechatException(sprintf('cache not has key [%s]', $key));
         }
         $this->checkExpired($cacheJson);
-        return $cacheJson[$key];
+        return $cacheJson[$key] ?? $default;
     }
 
-    public function set(string $key, string $value, string $expiredAt = '')
+    public function set($key, $value, $ttl = null)
     {
+        $ttl = empty($ttl) ? 7000 : $ttl;
         $this->key = $key;
-        $data = [$key => $value, 'expiredAt' => $expiredAt];
+        $data = [$key => $value, 'expiredAt' => Carbon::now()->addSeconds($ttl)->format('Y-m-d H:i:s')];
         file_put_contents($this->cacheFile(), json_encode($data));
     }
 
@@ -56,16 +61,18 @@ class Cache
             return;
         }
         if (Carbon::now()->gt($cache['expiredAt'])) {
-            $this->delete();
+            $this->delete($this->cacheFile());
             throw new WorkWechatException('cache data expired');
         }
     }
 
-    private function delete()
+    /**
+     * @param $key
+     */
+    public function delete($key)
     {
-        $file = $this->cacheFile();
-        if (file_exists($file)) {
-            unlink($file);
+        if (file_exists($key)) {
+            unlink($key);
         }
     }
 
@@ -79,4 +86,28 @@ class Cache
         return php_sapi_name() == 'fpm-fcgi' ? './.' . $this->cacheDir : $this->cacheDir;
     }
 
+    public function clear()
+    {
+        // TODO: Implement clear() method.
+    }
+
+    public function getMultiple($keys, $default = null)
+    {
+        // TODO: Implement getMultiple() method.
+    }
+
+    public function setMultiple($values, $ttl = null)
+    {
+        // TODO: Implement setMultiple() method.
+    }
+
+    public function deleteMultiple($keys)
+    {
+        // TODO: Implement deleteMultiple() method.
+    }
+
+    public function has($key)
+    {
+        // TODO: Implement has() method.
+    }
 }

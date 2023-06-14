@@ -3,7 +3,7 @@
 namespace WorkWechat\Service;
 
 use Carbon\Carbon;
-use WorkWechat\Utils\Cache;
+use WorkWechat\Utils\FileCache;
 use WorkWechat\Utils\WorkWechatException;
 
 class TicketService extends BaseService
@@ -15,19 +15,18 @@ class TicketService extends BaseService
     const AGENT_JSAPI_TICKET = '/cgi-bin/ticket/get';
     const CORPID_TO_OPEN_CORPID = '/cgi-bin/service/corpid_to_opencorpid';
 
-    private $cache;
-
     public function __construct(string $corpId, string $secret)
     {
         parent::__construct();
-        $this->cache = new Cache($corpId, $secret);
+        $this->cacheKey = 'WorkWechat:' . md5($corpId . $secret);
+
     }
 
     public function company(): string
     {
         try {
             //  获取缓存
-            return $this->cache->get(self::COMPANY_TICKET);
+            return $this->getCacheObject()->get(self::COMPANY_TICKET);
         } catch (WorkWechatException $e) {
             //  缓存不存在、过期，刷新
             return $this->refreshCompany();
@@ -40,7 +39,7 @@ class TicketService extends BaseService
             'access_token' => $this->getAccessToken()
         ]);
         $data = $this->client->get(self::COMPANY_JSAPI_TICKET);
-        $this->cache->set(self::COMPANY_TICKET, $data['ticket'], Carbon::now()->addMinutes(110));
+        $this->getCacheObject()->set(self::COMPANY_TICKET, $data['ticket']);
         return $data['ticket'];
     }
 
@@ -48,7 +47,7 @@ class TicketService extends BaseService
     {
         try {
             //  获取缓存
-            return $this->cache->get(self::AGENT_TICKET);
+            return $this->getCacheObject()->get(self::AGENT_TICKET);
         } catch (WorkWechatException $e) {
             //  缓存不存在、过期，刷新
             return $this->refreshAgent();
@@ -62,7 +61,7 @@ class TicketService extends BaseService
             'type' => 'agent_config'
         ]);
         $data = $this->client->get(self::AGENT_JSAPI_TICKET);
-        $this->cache->set(self::AGENT_TICKET, $data['ticket'], Carbon::now()->addMinutes(110));
+        $this->cache->set(self::AGENT_TICKET, $data['ticket']);
         return $data['ticket'];
     }
 
@@ -75,7 +74,7 @@ class TicketService extends BaseService
             'corpid' => $corpId,
         ]);
         $data = $this->client->post(self::CORPID_TO_OPEN_CORPID);
-        $this->cache->set(self::AGENT_TICKET, $data['ticket'], Carbon::now()->addMinutes(110));
+        $this->cache->set(self::AGENT_TICKET, $data['ticket']);
         return $data['open_corpid'];
     }
 }
